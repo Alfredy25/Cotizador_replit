@@ -112,7 +112,7 @@ export default function AjustesScreen() {
     }
   };
 
-  const topPad = Platform.OS === "web" ? 67 : 0;
+  const topPad = 0;
 
   if (isLoading) {
     return (

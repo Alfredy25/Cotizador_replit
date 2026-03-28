@@ -36,12 +36,10 @@ export default function HistorialScreen() {
     queryFn: () => fetchQuotes(filter),
   });
 
-  const topPad = Platform.OS === "web" ? 67 : 0;
-
   return (
-    <View style={[styles.container, { paddingTop: topPad }]}>
+    <View style={styles.container}>
       {/* Header */}
-      <View style={[styles.header, { paddingTop: insets.top > 0 ? insets.top : 16 }]}>
+      <View style={[styles.header, { paddingTop: insets.top > 0 ? insets.top : 20 }]}>
         <Text style={styles.headerTitle}>Historial</Text>
         <Pressable
           style={styles.addBtn}
@@ -112,8 +110,6 @@ export default function HistorialScreen() {
     </View>
   );
 }
-
-import { Platform } from "react-native";
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background },

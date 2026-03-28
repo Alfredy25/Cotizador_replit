@@ -38,7 +38,7 @@ En Supabase Dashboard → Authentication → Providers → Email → asegúrate 
 
 ## 2. Variables de entorno
 
-Crea un archivo `.env` en la raíz del proyecto (o usa las secrets de Replit):
+Crea un archivo `.env` en la raíz del proyecto cotizador_replit/artifacts/mobile/ (o usa las secrets de Replit):
 
 ```
 EXPO_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
@@ -61,7 +61,9 @@ EXPO_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-aqui
 pnpm install
 
 # Iniciar el servidor de desarrollo
-pnpm --filter @workspace/mobile run dev
+pnpm --filter @workspace/mobile run dev 
+ó
+npx expo start
 ```
 
 Escanea el código QR con Expo Go (Android) o la cámara (iOS).

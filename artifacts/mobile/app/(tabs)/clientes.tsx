@@ -103,7 +103,7 @@ export default function ClientesScreen() {
     }
   };
 
-  const topPad = Platform.OS === "web" ? 67 : 0;
+  const topPad = 0;
   const isSaving = createMutation.isPending || updateMutation.isPending;
 
   return (

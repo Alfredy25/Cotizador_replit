@@ -9,9 +9,9 @@ export default function TabLayout() {
   const isWeb = Platform.OS === "web";
   const insets = useSafeAreaInsets();
 
-  // On web, if it's in a mobile simulator, insets might be 0.
-  // We can provide a more responsive fallback for web.
-  const bottomPadding = insets.bottom > 0 ? insets.bottom : (isWeb ? 20 : 10);
+  // Standard tab bar heights (without insets)
+  const baseHeight = Platform.OS === "ios" ? 49 : 64;
+  const webHeight = 75;
 
   return (
     <Tabs
@@ -23,9 +23,10 @@ export default function TabLayout() {
           backgroundColor: Colors.surface,
           borderTopWidth: 1,
           borderTopColor: Colors.border,
-          height: Platform.OS === "ios" ? 88 + insets.bottom : (isWeb ? 70 : 60) + insets.bottom,
-          paddingBottom: Platform.OS === "ios" ? insets.bottom : (isWeb ? 12 : 8),
-          paddingTop: 8,
+          // Calculate height: base + insets.bottom + extra padding for labels
+          height: isWeb ? webHeight : baseHeight + insets.bottom + 8,
+          paddingBottom: isWeb ? 15 : insets.bottom + 5,
+          paddingTop: 10,
           elevation: 8,
           shadowColor: "#000",
           shadowOffset: { width: 0, height: -2 },
@@ -33,9 +34,12 @@ export default function TabLayout() {
           shadowRadius: 8,
         },
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: "600",
-          marginBottom: Platform.OS === "ios" ? 0 : 4,
+          marginTop: 2,
+        },
+        tabBarIconStyle: {
+          marginTop: 4,
         },
       }}
     >

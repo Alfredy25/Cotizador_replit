@@ -21,6 +21,8 @@ import { useAuth } from "@/context/AuthContext";
 import { fetchOrgSettings, upsertOrgSettings } from "@/lib/api";
 import { supabase } from "@/lib/supabase";
 
+const TAX_OPTIONS = ["0", "8", "10", "16"];
+
 export default function AjustesScreen() {
   const insets = useSafeAreaInsets();
   const { signOut, user } = useAuth();
@@ -41,7 +43,9 @@ export default function AjustesScreen() {
     if (settings) {
       setBusinessName(settings.business_name ?? "");
       setFolioPrefix(settings.folio_prefix ?? "COT");
-      setDefaultTax(String(settings.default_tax ?? 16));
+      // Convert decimal (e.g. 0.16) to whole number string (e.g. "16")
+      const taxPercent = Math.round((settings.default_tax ?? 0.16) * 100);
+      setDefaultTax(String(taxPercent));
       setLogoUrl(settings.logo_url);
     }
   }, [settings]);
@@ -57,10 +61,6 @@ export default function AjustesScreen() {
 
   const handleSave = () => {
     const taxNum = parseFloat(defaultTax);
-    if (isNaN(taxNum)) {
-      Alert.alert("IVA inválido", "Ingresa un número válido para el IVA.");
-      return;
-    }
     saveMutation.mutate({
       business_name: businessName.trim(),
       folio_prefix: folioPrefix.trim() || "COT",
@@ -184,15 +184,28 @@ export default function AjustesScreen() {
             <Text style={styles.hint}>Ej: COT → COT-000001</Text>
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>IVA por defecto (%)</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="16"
-              placeholderTextColor={Colors.textMuted}
-              keyboardType="decimal-pad"
-              value={defaultTax}
-              onChangeText={setDefaultTax}
-            />
+            <Text style={styles.label}>IVA por defecto</Text>
+            <View style={styles.taxOptions}>
+              {TAX_OPTIONS.map((option) => (
+                <Pressable
+                  key={option}
+                  style={[
+                    styles.taxChip,
+                    defaultTax === option && styles.taxChipActive,
+                  ]}
+                  onPress={() => setDefaultTax(option)}
+                >
+                  <Text
+                    style={[
+                      styles.taxChipText,
+                      defaultTax === option && styles.taxChipTextActive,
+                    ]}
+                  >
+                    {option}%
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
           </View>
         </View>
 
@@ -256,6 +269,24 @@ const styles = StyleSheet.create({
   input: {
     height: 50, borderRadius: 12, borderWidth: 1.5, borderColor: Colors.border,
     backgroundColor: Colors.background, paddingHorizontal: 16, fontSize: 16, color: Colors.text,
+  },
+  taxOptions: {
+    flexDirection: "row", gap: 8, marginTop: 4,
+  },
+  taxChip: {
+    flex: 1, paddingVertical: 10, borderRadius: 10,
+    backgroundColor: Colors.surfaceAlt, alignItems: "center",
+    borderWidth: 1, borderColor: Colors.border,
+  },
+  taxChipActive: {
+    backgroundColor: Colors.primaryLight,
+    borderColor: Colors.primary,
+  },
+  taxChipText: {
+    fontSize: 14, fontWeight: "600", color: Colors.textSecondary,
+  },
+  taxChipTextActive: {
+    color: Colors.primary,
   },
   hint: { fontSize: 12, color: Colors.textMuted, marginTop: 4 },
   saveBtn: { marginBottom: 16 },

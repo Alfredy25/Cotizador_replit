@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ export default function LoginScreen() {
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     handleSubmit,
@@ -122,14 +124,26 @@ export default function LoginScreen() {
 
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>Contraseña</Text>
-            <TextInput
-              style={[styles.input, errors.password && styles.inputError]}
-              placeholder="••••••"
-              placeholderTextColor={Colors.textMuted}
-              secureTextEntry
-              value={password}
-              onChangeText={(v) => setValue("password", v, { shouldValidate: true })}
-            />
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={[styles.input, styles.passwordInput, errors.password && styles.inputError]}
+                placeholder="••••••"
+                placeholderTextColor={Colors.textMuted}
+                secureTextEntry={!showPassword}
+                value={password}
+                onChangeText={(v) => setValue("password", v, { shouldValidate: true })}
+              />
+              <Pressable
+                onPress={() => setShowPassword(!showPassword)}
+                style={styles.eyeBtn}
+              >
+                <Feather
+                  name={showPassword ? "eye-off" : "eye"}
+                  size={20}
+                  color={Colors.textSecondary}
+                />
+              </Pressable>
+            </View>
             {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
           </View>
 
@@ -204,6 +218,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     fontSize: 16,
     color: Colors.text,
+  },
+  passwordContainer: {
+    position: "relative",
+    justifyContent: "center",
+  },
+  passwordInput: {
+    paddingRight: 50,
+  },
+  eyeBtn: {
+    position: "absolute",
+    right: 12,
+    width: 32,
+    height: 32,
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputError: { borderColor: Colors.danger },
   errorText: { fontSize: 12, color: Colors.danger, marginTop: 4 },

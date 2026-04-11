@@ -109,6 +109,20 @@ eas build --platform android --profile preview
 
 El APK queda en [expo.dev](https://expo.dev) (pestaña Builds del proyecto). El perfil `preview` genera **APK** y define las variables `EXPO_PUBLIC_*` de Supabase para el build.
 
+#### Si el build falla en «Preparar proyecto» con «package.json no existe en …/artifacts/mobile»
+
+Eso casi siempre es **ruta del proyecto en Expo / GitHub**, no un fallo de tener dos `package.json` (el de la raíz del monorepo y el de `artifacts/mobile` es normal).
+
+1. **Repositorio de GitHub**  
+   La raíz del repo debe ser **`Cotizador_replit`** (donde están `pnpm-workspace.yaml` y la carpeta `artifacts/`).  
+   Si en GitHub la raíz es la carpeta padre y el código queda en `Cotizador_replit/artifacts/mobile`, en [GitHub del proyecto en Expo](https://expo.dev/accounts/alfresi/projects/mobile/github) pon **Base directory** en `Cotizador_replit/artifacts/mobile` (o mueve el repo para que la raíz sea `Cotizador_replit`).
+
+2. **Base directory en expo.dev**  
+   Si la raíz del repo **es** `Cotizador_replit`, configura **Base directory** = `artifacts/mobile` (subcarpeta donde está la app Expo). Revisa [Project → GitHub](https://expo.dev/accounts/alfresi/projects/mobile/github) y [la guía oficial](https://docs.expo.dev/build/building-from-github/).
+
+3. **Sube todo antes del build**  
+   Haz `git push` del monorepo para que existan en el remoto `artifacts/mobile/package.json`, `pnpm-workspace.yaml` y `pnpm-lock.yaml`.
+
 ---
 
 ## Stack técnico

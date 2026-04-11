@@ -7,7 +7,8 @@
   "build": {
     "base": {
       "node": "22.14.0",
-      "pnpm": "10.33.0"
+      "pnpm": "10.33.0",
+      "corepack": true
     },
     "development": {
       "extends": "base",
@@ -16,8 +17,10 @@
     },
     "preview": {
       "extends": "base",
+      "environment": "preview",
       "android": {
-        "buildType": "apk"
+        "buildType": "apk",
+        "image": "latest"
       },
       "env": {
         "EXPO_PUBLIC_SUPABASE_URL": "https://wuotnckuyfjzbzdjluvw.supabase.co",

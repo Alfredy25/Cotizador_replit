@@ -5,11 +5,17 @@
     "requireCommit": false
   },
   "build": {
+    "base": {
+      "node": "22.14.0",
+      "pnpm": "10.33.0"
+    },
     "development": {
+      "extends": "base",
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
+      "extends": "base",
       "android": {
         "buildType": "apk"
       },
@@ -19,6 +25,7 @@
       }
     },
     "production": {
+      "extends": "base",
       "autoIncrement": true
     }
   },

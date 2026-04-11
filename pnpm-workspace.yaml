@@ -34,6 +34,10 @@ minimumReleaseAgeExclude:
   - '@replit/*'
   - stripe-replit-sync
 
+# Hoisted install: avoids native/React Native resolution issues with pnpm isolated
+# installs on EAS Build (see https://docs.expo.dev/guides/monorepos/)
+nodeLinker: hoisted
+
 packages:
   - artifacts/*
   - lib/*

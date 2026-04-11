@@ -87,21 +87,27 @@ Escanea el código QR con Expo Go (Android) o la cámara (iOS).
 
 ### Método alternativo: EAS Build (requiere cuenta Expo)
 
+El monorepo vive en la carpeta **`Cotizador_replit`** (raíz del repo Git). Los comandos de EAS se ejecutan desde **`Cotizador_replit/artifacts/mobile`**, donde están `app.json` y `eas.json`.
+
+1. **Sube todo el monorepo a GitHub** (debe existir `artifacts/mobile/package.json` en el remoto). Haz commit de `eas.json`, `pnpm-lock.yaml` y el resto del proyecto.
+2. Después de clonar o en tu PC, en la raíz del monorepo: `pnpm install` (en Windows, si falla el `preinstall`, usa `pnpm install --ignore-scripts`).
+3. Abre una terminal en **`artifacts/mobile`** y ejecuta:
+
 ```bash
-# Instalar EAS CLI
+# Instalar EAS CLI (una vez)
 npm install -g eas-cli
 
-# Login con tu cuenta de Expo
+# Sesión Expo
 eas login
 
-# Configurar el proyecto
+# Solo la primera vez o si falta configuración local
 eas build:configure
 
-# Generar APK
+# APK de prueba (perfil preview en eas.json)
 eas build --platform android --profile preview
 ```
 
-El APK estará disponible para descargar en [expo.dev](https://expo.dev).
+El APK queda en [expo.dev](https://expo.dev) (pestaña Builds del proyecto). El perfil `preview` genera **APK** y define las variables `EXPO_PUBLIC_*` de Supabase para el build.
 
 ---
 
